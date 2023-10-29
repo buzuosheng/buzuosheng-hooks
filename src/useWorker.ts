@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export function useWorker(workerFunctionCreator) {
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+type workerFunction = (i: any) => any
+
+export function useWorker<T>(workerFunctionCreator: (...args: any[]) => workerFunction) {
+  const [result, setResult] = useState<T | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const workerFunction = workerFunctionCreator()
 
@@ -14,7 +16,7 @@ export function useWorker(workerFunctionCreator) {
     const worker = new Worker(workerUrl);
 
     worker.onmessage = (e) => {
-      setResult(e.data);
+      setResult(e.data as T);
       URL.revokeObjectURL(workerUrl);
     };
 
