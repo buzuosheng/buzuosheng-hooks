@@ -5,7 +5,7 @@
 用来处理防抖的函数。接受两个参数`callback`和`delay`，分别为要处理的函数和延迟时间。
 
 ```jsx
-import { useDebouncedCallback } from 'use-debounce'
+import { useDebouncedCallback } from '@buzuosheng/hooks'
 
 function Input({ defaultValue }) {
   const [value, setValue] = useState(defaultValue)

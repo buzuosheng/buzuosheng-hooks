@@ -6,7 +6,7 @@
 
 ```jsx
 import { useState, useEffect } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebounce } from '@buzuosheng/hooks'
 
 export default function App() {
   const [text, setText] = useState('Hello')

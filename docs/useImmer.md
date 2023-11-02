@@ -5,7 +5,7 @@
 ## Usage
 
 ```jsx
-import { useImmer } from "use-immer";
+import { useImmer } from "@buzuosheng/hooks";
 
 function App() {
   const [state, setState] = useImmer({ count: 0 });
