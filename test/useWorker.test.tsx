@@ -10,9 +10,14 @@ describe('basic spec', () => {
   });
 
   it('should create a component', () => {
-    const fib = (i) => (i <= 1 ? i : fib(i - 1) + fib(i - 2));
+    const fib = function (i) {
+      const fibInner = function (i) {
+        return i <= 1 ? i : fibInner(i - 1) + fibInner(i - 2);
+      };
+      return fibInner(i);
+    };
     const CalcFib: React.FC<{ count: number }> = ({ count }) => {
-      const [result, error] = useWorker(() => fib(count));
+      const [result, error] = useWorker(fib, count);
       if (error) return <div>Error: {error}</div>;
       return <div>Result: {result}</div>;
     };

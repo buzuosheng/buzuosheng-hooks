@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-type workerFunction = (i: any) => any
-
-export function useWorker<T>(workerFunctionCreator: (...args: any[]) => workerFunction) {
-  const [result, setResult] = useState<T | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-
-  const workerFunction = workerFunctionCreator()
+export function useWorker<T, R>(
+  workerFunction: (message: T) => R,
+  messageToWorker: T
+) {
+  const [result, setResult] = useState<R | null>(null);
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const workerBlob = new Blob([
-      `postMessage((${workerFunction.toString()})());`
-    ]);
-    const workerUrl = URL.createObjectURL(workerBlob);
-    const worker = new Worker(workerUrl);
+    const workerCode = `
+    onmessage = function(e) {
+      var result = (${workerFunction.toString()})(e.data);
+      postMessage(result);
+    }
+  `;
+    const blob = new Blob([workerCode]);
+    const blobURL = window.URL.createObjectURL(blob);
+    const worker = new Worker(blobURL);
 
-    worker.onmessage = (e) => {
-      setResult(e.data as T);
-      URL.revokeObjectURL(workerUrl);
+    worker.onmessage = function (e) {
+      setResult(e.data as R);
+      URL.revokeObjectURL(blobURL)
     };
 
-    worker.onerror = (e) => {
-      setError(e);
-      URL.revokeObjectURL(workerUrl);
+    worker.onerror = function (e) {
+      setError(e.message);
+      URL.revokeObjectURL(blobURL)
     };
+
+    worker.postMessage(messageToWorker);
 
     return () => {
       worker.terminate();
+      URL.revokeObjectURL(blobURL);
     };
-  }, [workerFunction]);
+  }, [workerFunction, messageToWorker]);
 
   return [result, error];
 }
