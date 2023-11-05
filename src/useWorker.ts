@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export function useWorker<T, R>(
   workerFunction: (message: T) => R,
-  messageToWorker: T
+  message: T
 ) {
   const [result, setResult] = useState<R | null>(null);
   const [error, setError] = useState<string | null>(null)
@@ -28,13 +28,13 @@ export function useWorker<T, R>(
       URL.revokeObjectURL(blobURL)
     };
 
-    worker.postMessage(messageToWorker);
+    worker.postMessage(message);
 
     return () => {
       worker.terminate();
       URL.revokeObjectURL(blobURL);
     };
-  }, [workerFunction, messageToWorker]);
+  }, [workerFunction, message]);
 
   return [result, error];
 }
