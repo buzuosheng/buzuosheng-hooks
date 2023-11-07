@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 export function useDebouncedCallback(callback: (...args: any[]) => any, delay: number) {
 
   const callbackRef = useRef(callback);
-  const timerRef = useRef();
+  const timerRef = useRef<NodeJS.Timeout | null>();
 
   callbackRef.current = callback;
 

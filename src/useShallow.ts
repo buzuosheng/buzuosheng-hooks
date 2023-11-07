@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
 import shallowEqual from 'shallowequal';
 
 export function useShallow<T extends object>(initialState: T): [T, (newState: T) => void] {
