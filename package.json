@@ -24,7 +24,7 @@
   "homepage": "https://github.com/buzuosheng/buzuosheng-hooks",
   "repository": {
     "type": "git",
-    "url": "git@github.com:buzuosheng/buzuosheng-hooks.git"
+    "url": "git+ssh://git@github.com/buzuosheng/buzuosheng-hooks.git"
   },
   "husky": {
     "hooks": {
