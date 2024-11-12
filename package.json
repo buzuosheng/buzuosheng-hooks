@@ -1,6 +1,6 @@
 {
   "name": "@buzuosheng/hooks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "自定义react hooks, 包含useDebounce, useWorker等",
   "private": false,
   "main": "dist/index.js",
